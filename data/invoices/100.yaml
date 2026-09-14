@@ -1,0 +1,28 @@
+﻿invoice:
+  id: "100"
+  number: "100"
+  type_code: "380"
+  date: "2026-07-25"
+  delivery_date: "2026-07-25"
+  due_date: "2026-08-08"
+  currency: "EUR"
+  client: "rainer_zweck"
+  payment_means_code: "97"
+  payment_reference: "100"
+  
+  subject: "RECHNUNG"
+  intro_text: "Vielen Dank für Ihre Bestellung bei GeschenkHelden – Einfach. Heldenhaft. Schenken."
+  outro_text: ""
+  
+  items:
+    - id: 1
+      seller_assigned_id: "366563839714"
+      name: "KOMUNJ Überbrille für Brillenträger Polarisiert mit Etui, Herren & Damen Überbrille - Radfahren, Wandern, Angeln, Golfen"
+      description: "Artikelnr.: 366563839714"
+      quantity: 1.0
+      unit: "C62"
+      unit_name: "Stück"
+      unit_price_net: 15.69
+      unit_price_gross: 18.67
+      vat_rate: 19.00
+      vat_category: "S"

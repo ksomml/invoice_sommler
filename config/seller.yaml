@@ -1,0 +1,25 @@
+seller:
+  name: "Kevin Sommler"
+  trade_name: "Kevin Sommler – Engineering"
+  profession: "Freiberuflicher Ingenieur"
+  specialization: "Humanoide Robotik & Embedded Systems"
+  logo: "/assets/logo.png"
+  contact:
+    person: "Kevin Sommler"
+    phone: "01784440117"
+    email: "sommler@live.de"
+  address:
+    street: "Friedrich-Ebert-Straße 12"
+    zip: "15344"
+    city: "Strausberg"
+    country_code: "DE"
+    country: "Deutschland"
+  tax:
+    vat_id: "DE463781564"
+    tax_number: "064/275/03524"
+    tax_office: "Finanzamt Strausberg"
+  bank:
+    holder: "Kevin Sommler"
+    name: "Revolut Bank UAB"
+    iban: "DE32100101783678168888"
+    bic: "REVODEB2"

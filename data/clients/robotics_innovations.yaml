@@ -1,0 +1,18 @@
+﻿client_id: "robotics_innovations"
+name: "Robotics Innovations GmbH"
+trade_name: "Robotics Innovations Lab"
+contact:
+  person: "Dr. Anna Weber"
+  phone: "+49 30 98765432"
+  email: "billing@robotics-innovations.de"
+address:
+  street: "Technologiepark 4"
+  additional: "Gebäude B, 3. OG"
+  zip: "10115"
+  city: "Berlin"
+  country_code: "DE"
+  country: "Deutschland"
+tax:
+  vat_id: "DE312345678"
+buyer_reference: "ROB-2026-PO-9912"
+order_reference: "PO-2026-081"

@@ -1,0 +1,49 @@
+invoice:
+  id: "2026-001"
+  number: "RE-2026-001"
+  type_code: "380"
+  date: "2026-09-02"
+  delivery_date: "2026-08-31"
+  delivery_period:
+    start: "2026-08-01"
+    end: "2026-08-31"
+  due_date: "2026-09-16"
+  currency: "EUR"
+  client: "robotics_innovations"
+  payment_means_code: "58"
+  payment_reference: "RE-2026-001"
+
+  subject: "Rechnung RE-2026-001: Entwicklungsleistungen Humanoide Robotik"
+  intro_text: "Vielen Dank für die angenehme Zusammenarbeit."
+  outro_text: ""
+
+  items:
+    - id: 1
+      name: "Entwicklung ROS2 Controller für Humanoide Kinematik"
+      description: "Implementierung der inversen Kinematik, Trajektorienplanung und ROS2 Node Anbindung auf Embedded ARM64 Plattform"
+      quantity: 32.0
+      unit: "HUR"
+      unit_name: "Std."
+      unit_price_net: 125.00
+      vat_rate: 19.00
+      vat_category: "S"
+
+    - id: 2
+      name: "Firmware-Entwicklung BLDC Motorcontroller (Echtzeit FOC)"
+      description: "Regelungstechnische Optimierung der feldorientierten Regelung (FOC) und CANopen Kommunikation auf STM32H7"
+      quantity: 18.0
+      unit: "HUR"
+      unit_name: "Std."
+      unit_price_net: 125.00
+      vat_rate: 19.00
+      vat_category: "S"
+
+    - id: 3
+      name: "Elektronik-Prototyping & Prüfstandsaufbau"
+      description: "Aufbau und Inbetriebnahme des Sensorik- und Motortreiberteststands für Dauerlastprüfungen"
+      quantity: 1.0
+      unit: "C62"
+      unit_name: "Pauschale"
+      unit_price_net: 450.00
+      vat_rate: 19.00
+      vat_category: "S"
