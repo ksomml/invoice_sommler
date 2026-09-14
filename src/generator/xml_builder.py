@@ -5,6 +5,7 @@ from typing import Dict, Any
 RAM = "urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:100"
 RSM = "urn:un:unece:uncefact:data:standard:CrossIndustryInvoice:100"
 UDT = "urn:un:unece:uncefact:data:standard:UnqualifiedDataType:100"
+QDT = "urn:un:unece:uncefact:data:standard:QualifiedDataType:100"
 
 def fmt_2f(val: float) -> str:
     return f"{val:.2f}"
@@ -24,8 +25,9 @@ def build_en16931_xml(data: Dict[str, Any]) -> str:
     ET.register_namespace("ram", RAM)
     ET.register_namespace("rsm", RSM)
     ET.register_namespace("udt", UDT)
+    ET.register_namespace("qdt", QDT)
 
-    root = ET.Element(f"{{{RSM}}}CrossIndustryInvoice")
+    root = ET.Element(f"{{{RSM}}}CrossIndustryInvoice", attrib={"xmlns:qdt": QDT})
 
     # 1. ExchangedDocumentContext
     ctx = ET.SubElement(root, f"{{{RSM}}}ExchangedDocumentContext")
@@ -45,7 +47,12 @@ def build_en16931_xml(data: Dict[str, Any]) -> str:
     dt_str.set("format", "102")
     dt_str.text = fmt_date_102(inv.get("date", ""))
 
-    # IncludedNote (BT-22)
+    # Regulatory statement (BT-21="REG" / BT-22)
+    reg_note = ET.SubElement(doc, f"{{{RAM}}}IncludedNote")
+    ET.SubElement(reg_note, f"{{{RAM}}}Content").text = "Freiberuflicher Ingenieur (nicht im Handelsregister eingetragen)"
+    ET.SubElement(reg_note, f"{{{RAM}}}SubjectCode").text = "REG"
+
+    # General Invoice Notes (BT-22)
     if inv.get("notes"):
         note_elem = ET.SubElement(doc, f"{{{RAM}}}IncludedNote")
         ET.SubElement(note_elem, f"{{{RAM}}}Content").text = inv["notes"]

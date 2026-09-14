@@ -55,6 +55,7 @@ def compile_typst_pdf(
             "typst",
             "compile",
             "--root", str(base_dir),
+            "--pdf-standard", "a-3b",
             str(template_path),
             str(output_pdf_path),
             "--input", f"data_file={root_rel_path}"
@@ -77,8 +78,7 @@ def compile_typst_pdf(
             create_hybrid_pdf(
                 input_pdf_path=output_pdf_path,
                 xml_path=xml_path,
-                output_pdf_path=hybrid_pdf_path,
-                attachment_filename="factur-x.xml"
+                output_pdf_path=hybrid_pdf_path
             )
             
         return output_pdf_path

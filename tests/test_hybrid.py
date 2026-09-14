@@ -35,10 +35,13 @@ class TestHybridBuilder(unittest.TestCase):
             self.assertTrue(res_path.exists())
 
             # Verify attachment in generated PDF
-            with open(output_pdf, "rb") as f:
-                filename, xml_bytes = facturx.get_facturx_xml_from_pdf(f.read(), check_xsd=False)
-                self.assertEqual(filename, "factur-x.xml")
-                self.assertGreater(len(xml_bytes), 100)
+            import pypdf
+            reader = pypdf.PdfReader(str(output_pdf))
+            root = reader.trailer["/Root"]
+            self.assertIn("/AF", root)
+            self.assertIn("/Names", root)
+            names = root["/Names"]["/EmbeddedFiles"]["/Names"]
+            self.assertEqual(names[0], "xrechnung.xml")
 
         finally:
             if dummy_pdf.exists(): dummy_pdf.unlink()
