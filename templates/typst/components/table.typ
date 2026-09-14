@@ -33,7 +33,13 @@
 
   #table(
     columns: (24pt, 1fr, 74pt, 66pt, 36pt, 68pt),
-    stroke: (x, y) => if y == 0 { (bottom: 1.5pt + accent-color) } else { (bottom: 0.4pt + rgb("#E2E8F0")) },
+    stroke: (x, y) => if y == 0 {
+      (bottom: 1.5pt + accent-color)
+    } else if y < items.len() {
+      (bottom: 0.4pt + rgb("#E2E8F0"))
+    } else {
+      none
+    },
     fill: (col, row) => if row == 0 { rgb("#FCFAF3") } else if calc.even(row) { rgb("#FDFBF7") } else { none },
     inset: (x: 6pt, y: 7pt),
     align: (col, row) => (

@@ -37,12 +37,13 @@ def build_epc_payload(
     clean_iban = str(iban).replace(" ", "").upper()
     clean_bic = str(bic).replace(" ", "").upper() if bic else ""
     amt_str = f"EUR{amount:.2f}"
+    clean_recipient = str(recipient).replace("\r", " ").replace("\n", " ").strip()[:70]
     
-    # Determine remittance info
-    struct_ref = reference[:35] if (reference and reference.startswith("RF")) else ""
-    unstruct_ref = unstructured_text[:140] if not struct_ref else ""
+    # Determine remittance info (Structured RF... or Unstructured, max 140 chars)
+    struct_ref = str(reference).replace("\r", "").replace("\n", "").strip()[:35] if (reference and str(reference).strip().upper().startswith("RF")) else ""
+    unstruct_ref = str(unstructured_text).replace("\r", " ").replace("\n", " ").strip()[:140] if not struct_ref else ""
     if not struct_ref and not unstruct_ref and reference:
-        unstruct_ref = reference[:140]
+        unstruct_ref = str(reference).replace("\r", " ").replace("\n", " ").strip()[:140]
 
     lines = [
         "BCD",
@@ -50,14 +51,20 @@ def build_epc_payload(
         "1",
         "SCT",
         clean_bic,
-        recipient[:70],
+        clean_recipient,
         clean_iban,
         amt_str,
-        "",          # Line 9: Purpose code
-        struct_ref,  # Line 10: Structured Reference
-        unstruct_ref,# Line 11: Unstructured Remittance text
-        ""           # Line 12: Hint/Information
+        "",          # Line 9: Purpose code (optional)
+        struct_ref,  # Line 10: Structured Reference (optional)
+        unstruct_ref,# Line 11: Unstructured Remittance text (optional)
+        ""           # Line 12: Beneficiary to Originator Info (optional)
     ]
+    
+    # EPC069-12 specification rule:
+    # "The last populated element must not be followed by any character or element separator."
+    while lines and lines[-1] == "":
+        lines.pop()
+
     return "\n".join(lines)
 
 
@@ -89,23 +96,28 @@ def generate_girocode_svg(
     if amount <= 0:
         return None
 
-    ref = str(inv.get("payment_reference", inv.get("number", "")))
-    text = f"Rechnung {ref}"
+    ref = str(inv.get("payment_reference", inv.get("number", ""))).strip()
+    if ref.upper().startswith("RF") and len(ref) <= 35:
+        struct_ref = ref.upper()
+        unstruct_text = ""
+    else:
+        struct_ref = ""
+        unstruct_text = f"Rechnung {ref}" if not ref.lower().startswith("rechnung") else ref
 
     payload = build_epc_payload(
         iban=iban,
         bic=bic,
         recipient=recipient,
         amount=amount,
-        reference="",
-        unstructured_text=text
+        reference=struct_ref,
+        unstructured_text=unstruct_text
     )
 
     qr = qrcode.QRCode(
         version=None,
         error_correction=qrcode.constants.ERROR_CORRECT_M,
         box_size=10,
-        border=2,
+        border=4,
         image_factory=qrcode.image.svg.SvgPathImage
     )
     qr.add_data(payload)
