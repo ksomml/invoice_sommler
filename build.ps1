@@ -29,8 +29,8 @@ $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 Set-Location $ScriptDir
 
 $CliArgs = @("-m", "src.cli", "build", $InvoiceId)
-if (-not $NoHybrid) {
-    $CliArgs += "--hybrid"
+if ($NoHybrid) {
+    $CliArgs += "--no-hybrid"
 }
 if ($Force) {
     $CliArgs += "--force"

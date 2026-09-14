@@ -72,20 +72,16 @@ def cmd_build(args):
                 f.write(xml_content)
             print(f"   [XML] Erzeugt: {xml_path.relative_to(BASE_DIR)}")
 
-            # 2. Generate PDF (Typst)
+            # 2. Generate Primary Hybrid PDF (Typst + Embedded XML)
             pdf_path = out_dir / f"RE-{inv_num}.pdf" if not str(inv_num).startswith("RE-") else out_dir / f"{inv_num}.pdf"
             compile_typst_pdf(
                 data=data,
                 output_pdf_path=pdf_path,
                 base_dir=BASE_DIR,
                 xml_path=xml_path,
-                create_hybrid=getattr(args, "hybrid", False)
+                create_hybrid=not getattr(args, "no_hybrid", False)
             )
-            print(f"   [PDF] Erzeugt: {pdf_path.relative_to(BASE_DIR)}")
-
-            if getattr(args, "hybrid", False):
-                hybrid_pdf_path = out_dir / f"{pdf_path.stem}_factur-x.pdf"
-                print(f"   [HYBRID] Factur-X / ZUGFeRD erzeugt: {hybrid_pdf_path.relative_to(BASE_DIR)}")
+            print(f"   [PDF] Erzeugt (inkl. E-Rechnung XML): {pdf_path.relative_to(BASE_DIR)}")
 
             totals = data["totals"]
             print(f"   [SUMME] Netto: {totals['line_total_net']:.2f} EUR | MwSt: {totals['tax_total']:.2f} EUR | Brutto: {totals['grand_total']:.2f} EUR")
@@ -249,9 +245,9 @@ def main():
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     # build
-    p_build = subparsers.add_parser("build", help="Baut Typst PDF und EN16931 XML")
-    p_build.add_argument("invoice_id", help="Rechnungs-ID (z.B. '2026-001' oder 'all')")
-    p_build.add_argument("--hybrid", "--factur-x", action="store_true", help="Erzeugt hybrides ZUGFeRD / Factur-X PDF mit eingebettetem XML")
+    p_build = subparsers.add_parser("build", help="Baut E-Rechnungs PDF (ZUGFeRD/PDF-A3) und EN16931 XML")
+    p_build.add_argument("invoice_id", help="Rechnungs-ID (z.B. '2026-MBS-001' oder 'all')")
+    p_build.add_argument("--no-hybrid", action="store_true", help="Erzeugt nur einfaches PDF ohne eingebettetes XML")
     p_build.add_argument("--force", action="store_true", help="Ignoriert Validierungswarnungen")
     p_build.add_argument("--verbose", "-v", action="store_true", help="Ausführliche Fehlerausgabe")
     p_build.set_defaults(func=cmd_build)

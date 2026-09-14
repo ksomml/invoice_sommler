@@ -12,10 +12,10 @@ def compile_typst_pdf(
     output_pdf_path: Path,
     base_dir: Path,
     xml_path: Optional[Path] = None,
-    create_hybrid: bool = False
+    create_hybrid: bool = True
 ) -> Path:
     """
-    Compiles the invoice data into a PDF via Typst and optionally embeds the EN16931 XML (Factur-X).
+    Compiles the invoice data into a PDF via Typst and embeds the EN16931 / XRechnung XML (ZUGFeRD 2 / PDF/A-3b).
     Maintains lossless full TrueColor quality for logos and embedded graphics.
     """
     template_path = base_dir / "templates" / "typst" / "invoice.typ"
@@ -72,13 +72,12 @@ def compile_typst_pdf(
         if result.returncode != 0:
             raise RuntimeError(f"Typst-Fehler ({result.returncode}):\n{result.stderr}\n{result.stdout}")
 
-        # 3. Hybrid embedding if requested
+        # 3. Hybrid embedding (embeds XML directly into primary PDF)
         if create_hybrid and xml_path and xml_path.exists():
-            hybrid_pdf_path = output_pdf_path.parent / f"{output_pdf_path.stem}_factur-x.pdf"
             create_hybrid_pdf(
                 input_pdf_path=output_pdf_path,
                 xml_path=xml_path,
-                output_pdf_path=hybrid_pdf_path
+                output_pdf_path=output_pdf_path
             )
             
         return output_pdf_path

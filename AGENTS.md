@@ -63,11 +63,10 @@ invoice_sommler/
 │   │   └── validator.py
 │   └── cli.py                 # Command-Line-Interface (Build-, Test-, Watch-Commands)
 ├── tests/                     # Testsuite für Berechnungen, GiroCode, XML & Hybrid-PDF
-└── output/                    # Generierte Artefakte (PDFs, XMLs, Factur-X PDFs)
+└── output/                    # Generierte Artefakte (PDFs & XMLs)
     └── 2026/
-        ├── RE-MBS-2026-001.pdf
-        ├── RE-MBS-2026-001.xml
-        └── RE-MBS-2026-001_factur-x.pdf
+        ├── RE-MBS-2026-001.pdf  # Primäre Hybrid-E-Rechnung (PDF/A-3b mit eingebetteter xrechnung.xml)
+        └── RE-MBS-2026-001.xml  # Standalone EN16931 / XRechnung 3.0 Datei
 ```
 
 ---
@@ -108,7 +107,6 @@ invoice_sommler/
    py -m src.cli test
    ```
 4. **Ergebnis in `output/<JAHR>/`**:
-   - `RE-<KÜRZEL>-<JAHR>-<NUMMER>.pdf` (Typst PDF mit Vektor-Logo & EPC-GiroCode QR)
-   - `RE-<KÜRZEL>-<JAHR>-<NUMMER>.xml` (100% KoSIT-validierte EN16931 / XRechnung 3.0 Datei)
-   - `RE-<KÜRZEL>-<JAHR>-<NUMMER>_factur-x.pdf` (Hybride PDF/A-3 Factur-X / ZUGFeRD E-Rechnung)
+   - `RE-<KÜRZEL>-<JAHR>-<NUMMER>.pdf` (Hybride PDF/A-3b E-Rechnung mit Vektor-Logo, EPC-QR und eingebetteter `xrechnung.xml`)
+   - `RE-<KÜRZEL>-<JAHR>-<NUMMER>.xml` (100% KoSIT-validierte reine EN16931 / XRechnung 3.0 Datei)
 
