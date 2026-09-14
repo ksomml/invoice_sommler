@@ -1,0 +1,30 @@
+invoice:
+  id: "2026-MBS-001"
+  number: "RE-MBS-2026-001"
+  type_code: "380"
+  date: "2026-09-18"
+  delivery_period:
+    start: "2026-09-15"
+    end: "2026-09-17"
+  due_date: "2026-10-02"
+  currency: "EUR"
+  client: "mybotshop"
+  payment_means_code: "58"
+  payment_reference: "RE-MBS-2026-001"
+  
+  subject: "Technische Messebetreuung – Big Bang KI Festival Berlin"
+  intro_text: "Vielen Dank für Ihren Auftrag. Für die erbrachten Leistungen erlaube ich mir, folgende Position in Rechnung zu stellen:"
+  outro_text: ""
+  
+  notes: "Hinweis zur Haftung: Die Haftung für Schäden an überlassener Hardware sowie für Sach- und Vermögensschäden im Rahmen der Leistungserbringung ist auf Vorsatz und grobe Fahrlässigkeit beschränkt. Eine Haftung für leichte Fahrlässigkeit wird vertraglich ausgeschlossen."
+
+  items:
+    - id: 1
+      name: "Technische Messebetreuung & Roboter-Demonstration inkl. Kundenansprache"
+      description: "Big Bang KI Festival Berlin (15.09. - 17.09.2026)"
+      quantity: 1.0
+      unit: "C62"
+      unit_name: "Pauschale"
+      unit_price_net: 1080.00
+      vat_rate: 19.00
+      vat_category: "S"

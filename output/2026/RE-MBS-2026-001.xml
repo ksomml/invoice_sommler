@@ -9,11 +9,14 @@
     </ram:GuidelineSpecifiedDocumentContextParameter>
   </rsm:ExchangedDocumentContext>
   <rsm:ExchangedDocument>
-    <ram:ID>100</ram:ID>
+    <ram:ID>RE-MBS-2026-001</ram:ID>
     <ram:TypeCode>380</ram:TypeCode>
     <ram:IssueDateTime>
-      <udt:DateTimeString format="102">20260725</udt:DateTimeString>
+      <udt:DateTimeString format="102">20260918</udt:DateTimeString>
     </ram:IssueDateTime>
+    <ram:IncludedNote>
+      <ram:Content>Hinweis zur Haftung: Die Haftung für Schäden an überlassener Hardware sowie für Sach- und Vermögensschäden im Rahmen der Leistungserbringung ist auf Vorsatz und grobe Fahrlässigkeit beschränkt. Eine Haftung für leichte Fahrlässigkeit wird vertraglich ausgeschlossen.</ram:Content>
+    </ram:IncludedNote>
   </rsm:ExchangedDocument>
   <rsm:SupplyChainTradeTransaction>
     <ram:IncludedSupplyChainTradeLineItem>
@@ -21,13 +24,12 @@
         <ram:LineID>1</ram:LineID>
       </ram:AssociatedDocumentLineDocument>
       <ram:SpecifiedTradeProduct>
-        <ram:SellerAssignedID>366563839714</ram:SellerAssignedID>
-        <ram:Name>KOMUNJ Überbrille für Brillenträger Polarisiert mit Etui, Herren &amp; Damen Überbrille - Radfahren, Wandern, Angeln, Golfen</ram:Name>
-        <ram:Description>Artikelnr.: 366563839714</ram:Description>
+        <ram:Name>Technische Messebetreuung &amp; Roboter-Demonstration inkl. Kundenansprache</ram:Name>
+        <ram:Description>Big Bang KI Festival Berlin (15.09. - 17.09.2026)</ram:Description>
       </ram:SpecifiedTradeProduct>
       <ram:SpecifiedLineTradeAgreement>
         <ram:NetPriceProductTradePrice>
-          <ram:ChargeAmount>15.69</ram:ChargeAmount>
+          <ram:ChargeAmount>1080.00</ram:ChargeAmount>
         </ram:NetPriceProductTradePrice>
       </ram:SpecifiedLineTradeAgreement>
       <ram:SpecifiedLineTradeDelivery>
@@ -40,12 +42,12 @@
           <ram:RateApplicablePercent>19.00</ram:RateApplicablePercent>
         </ram:ApplicableTradeTax>
         <ram:SpecifiedTradeSettlementLineMonetarySummation>
-          <ram:LineTotalAmount>15.69</ram:LineTotalAmount>
+          <ram:LineTotalAmount>1080.00</ram:LineTotalAmount>
         </ram:SpecifiedTradeSettlementLineMonetarySummation>
       </ram:SpecifiedLineTradeSettlement>
     </ram:IncludedSupplyChainTradeLineItem>
     <ram:ApplicableHeaderTradeAgreement>
-      <ram:BuyerReference>rainer7966</ram:BuyerReference>
+      <ram:BuyerReference>N/A</ram:BuyerReference>
       <ram:SellerTradeParty>
         <ram:Name>Kevin Sommler</ram:Name>
         <ram:DefinedTradeContact>
@@ -74,43 +76,38 @@
         </ram:SpecifiedTaxRegistration>
       </ram:SellerTradeParty>
       <ram:BuyerTradeParty>
-        <ram:Name>Rainer Zweck</ram:Name>
+        <ram:Name>MYBOTSHOP GmbH</ram:Name>
         <ram:DefinedTradeContact>
-          <ram:PersonName>Rainer Zweck</ram:PersonName>
-          <ram:TelephoneUniversalCommunication>
-            <ram:CompleteNumber>+49 1525 3717676</ram:CompleteNumber>
-          </ram:TelephoneUniversalCommunication>
           <ram:EmailURIUniversalCommunication>
-            <ram:URIID>08fde6ac15f99644f041@members.ebay.com</ram:URIID>
+            <ram:URIID>info@mybotshop.de</ram:URIID>
           </ram:EmailURIUniversalCommunication>
         </ram:DefinedTradeContact>
         <ram:PostalTradeAddress>
-          <ram:PostcodeCode>45659</ram:PostcodeCode>
-          <ram:LineOne>Wildermannstr.69</ram:LineOne>
-          <ram:LineTwo>Eingang, Hausrückseite !!</ram:LineTwo>
-          <ram:CityName>Recklinghausen</ram:CityName>
+          <ram:PostcodeCode>50126</ram:PostcodeCode>
+          <ram:LineOne>Willy-Messerschmitt-Strasse 12</ram:LineOne>
+          <ram:CityName>Bergheim</ram:CityName>
           <ram:CountryID>DE</ram:CountryID>
         </ram:PostalTradeAddress>
         <ram:URIUniversalCommunication>
-          <ram:URIID schemeID="EM">08fde6ac15f99644f041@members.ebay.com</ram:URIID>
+          <ram:URIID schemeID="EM">info@mybotshop.de</ram:URIID>
         </ram:URIUniversalCommunication>
+        <ram:SpecifiedTaxRegistration>
+          <ram:ID schemeID="VA">DE321168831</ram:ID>
+        </ram:SpecifiedTaxRegistration>
       </ram:BuyerTradeParty>
-      <ram:BuyerOrderReferencedDocument>
-        <ram:IssuerAssignedID>15-14932-43324</ram:IssuerAssignedID>
-      </ram:BuyerOrderReferencedDocument>
     </ram:ApplicableHeaderTradeAgreement>
     <ram:ApplicableHeaderTradeDelivery>
       <ram:ActualDeliverySupplyChainEvent>
         <ram:OccurrenceDateTime>
-          <udt:DateTimeString format="102">20260725</udt:DateTimeString>
+          <udt:DateTimeString format="102">20260917</udt:DateTimeString>
         </ram:OccurrenceDateTime>
       </ram:ActualDeliverySupplyChainEvent>
     </ram:ApplicableHeaderTradeDelivery>
     <ram:ApplicableHeaderTradeSettlement>
-      <ram:PaymentReference>100</ram:PaymentReference>
+      <ram:PaymentReference>RE-MBS-2026-001</ram:PaymentReference>
       <ram:InvoiceCurrencyCode>EUR</ram:InvoiceCurrencyCode>
       <ram:SpecifiedTradeSettlementPaymentMeans>
-        <ram:TypeCode>97</ram:TypeCode>
+        <ram:TypeCode>58</ram:TypeCode>
         <ram:PayeePartyCreditorFinancialAccount>
           <ram:IBANID>DE32100101783678168888</ram:IBANID>
         </ram:PayeePartyCreditorFinancialAccount>
@@ -119,25 +116,33 @@
         </ram:PayeeSpecifiedCreditorFinancialInstitution>
       </ram:SpecifiedTradeSettlementPaymentMeans>
       <ram:ApplicableTradeTax>
-        <ram:CalculatedAmount>2.98</ram:CalculatedAmount>
+        <ram:CalculatedAmount>205.20</ram:CalculatedAmount>
         <ram:TypeCode>VAT</ram:TypeCode>
-        <ram:BasisAmount>15.69</ram:BasisAmount>
+        <ram:BasisAmount>1080.00</ram:BasisAmount>
         <ram:CategoryCode>S</ram:CategoryCode>
         <ram:RateApplicablePercent>19.00</ram:RateApplicablePercent>
       </ram:ApplicableTradeTax>
+      <ram:BillingSpecifiedPeriod>
+        <ram:StartDateTime>
+          <udt:DateTimeString format="102">20260915</udt:DateTimeString>
+        </ram:StartDateTime>
+        <ram:EndDateTime>
+          <udt:DateTimeString format="102">20260917</udt:DateTimeString>
+        </ram:EndDateTime>
+      </ram:BillingSpecifiedPeriod>
       <ram:SpecifiedTradePaymentTerms>
         <ram:DueDateDateTime>
-          <udt:DateTimeString format="102">20260808</udt:DateTimeString>
+          <udt:DateTimeString format="102">20261002</udt:DateTimeString>
         </ram:DueDateDateTime>
       </ram:SpecifiedTradePaymentTerms>
       <ram:SpecifiedTradeSettlementHeaderMonetarySummation>
-        <ram:LineTotalAmount>15.69</ram:LineTotalAmount>
+        <ram:LineTotalAmount>1080.00</ram:LineTotalAmount>
         <ram:ChargeTotalAmount>0.00</ram:ChargeTotalAmount>
         <ram:AllowanceTotalAmount>0.00</ram:AllowanceTotalAmount>
-        <ram:TaxBasisTotalAmount>15.69</ram:TaxBasisTotalAmount>
-        <ram:TaxTotalAmount currencyID="EUR">2.98</ram:TaxTotalAmount>
-        <ram:GrandTotalAmount>18.67</ram:GrandTotalAmount>
-        <ram:DuePayableAmount>18.67</ram:DuePayableAmount>
+        <ram:TaxBasisTotalAmount>1080.00</ram:TaxBasisTotalAmount>
+        <ram:TaxTotalAmount currencyID="EUR">205.20</ram:TaxTotalAmount>
+        <ram:GrandTotalAmount>1285.20</ram:GrandTotalAmount>
+        <ram:DuePayableAmount>1285.20</ram:DuePayableAmount>
       </ram:SpecifiedTradeSettlementHeaderMonetarySummation>
     </ram:ApplicableHeaderTradeSettlement>
   </rsm:SupplyChainTradeTransaction>

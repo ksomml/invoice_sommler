@@ -1,0 +1,13 @@
+client_id: "mybotshop"
+client_code: "MBS"
+name: "MYBOTSHOP GmbH"
+contact:
+  email: "info@mybotshop.de"
+address:
+  street: "Willy-Messerschmitt-Strasse 12"
+  zip: "50126"
+  city: "Bergheim"
+  country_code: "DE"
+  country: "Deutschland"
+tax:
+  vat_id: "DE321168831"

@@ -8,8 +8,9 @@
     align: (left + top, right + top),
     [
       // Small sender line above recipient (DIN 5008)
+      #let seller-country = if "country" in seller.address and seller.address.country != "" [ · #seller.address.country] else []
       #text(size: 7.5pt, fill: rgb("#718096"))[
-        #seller.name · #seller.address.street · #seller.address.zip #seller.address.city
+        #seller.name · #seller.address.street · #seller.address.zip #seller.address.city#seller-country
       ]
       #v(3mm)
 
@@ -29,8 +30,11 @@
           #client.address.additional\
         ]
         #client.address.zip #client.address.city\
-        #if "country" in client.address and client.address.country != "Deutschland" [
+        #if "country" in client.address and client.address.country != "" and client.address.country != none [
           #client.address.country\
+        ]
+        #if "tax" in client and "vat_id" in client.tax and client.tax.vat_id != "" and client.tax.vat_id != none [
+          USt-IdNr. #client.tax.vat_id\
         ]
       ]
     ],

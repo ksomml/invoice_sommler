@@ -1,5 +1,7 @@
 import unittest
+
 from src.validators.validator import validate_invoice_data
+
 
 class TestValidator(unittest.TestCase):
     def test_valid_data(self):

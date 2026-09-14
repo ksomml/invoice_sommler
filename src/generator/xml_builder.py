@@ -1,4 +1,4 @@
-﻿import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as ET
 from xml.dom import minidom
 from typing import Dict, Any
 
@@ -44,6 +44,11 @@ def build_en16931_xml(data: Dict[str, Any]) -> str:
     dt_str = ET.SubElement(issue_dt, f"{{{UDT}}}DateTimeString")
     dt_str.set("format", "102")
     dt_str.text = fmt_date_102(inv.get("date", ""))
+
+    # IncludedNote (BT-22)
+    if inv.get("notes"):
+        note_elem = ET.SubElement(doc, f"{{{RAM}}}IncludedNote")
+        ET.SubElement(note_elem, f"{{{RAM}}}Content").text = inv["notes"]
 
     # 3. SupplyChainTradeTransaction
     tx = ET.SubElement(root, f"{{{RSM}}}SupplyChainTradeTransaction")
@@ -130,6 +135,8 @@ def build_en16931_xml(data: Dict[str, Any]) -> str:
     ET.SubElement(buyer_party, f"{{{RAM}}}Name").text = client.get("name", "")
 
     b_contact_data = client.get("contact", {})
+    b_email = b_contact_data.get("email") or client.get("email") or "info@mybotshop.de"
+    
     if b_contact_data:
         b_contact = ET.SubElement(buyer_party, f"{{{RAM}}}DefinedTradeContact")
         if b_contact_data.get("person"):
@@ -137,9 +144,9 @@ def build_en16931_xml(data: Dict[str, Any]) -> str:
         if b_contact_data.get("phone"):
             b_tel = ET.SubElement(b_contact, f"{{{RAM}}}TelephoneUniversalCommunication")
             ET.SubElement(b_tel, f"{{{RAM}}}CompleteNumber").text = b_contact_data["phone"]
-        if b_contact_data.get("email"):
+        if b_email:
             b_em = ET.SubElement(b_contact, f"{{{RAM}}}EmailURIUniversalCommunication")
-            ET.SubElement(b_em, f"{{{RAM}}}URIID").text = b_contact_data["email"]
+            ET.SubElement(b_em, f"{{{RAM}}}URIID").text = b_email
 
     b_addr = client.get("address", {})
     b_postal = ET.SubElement(buyer_party, f"{{{RAM}}}PostalTradeAddress")
@@ -150,11 +157,12 @@ def build_en16931_xml(data: Dict[str, Any]) -> str:
     ET.SubElement(b_postal, f"{{{RAM}}}CityName").text = b_addr.get("city", "")
     ET.SubElement(b_postal, f"{{{RAM}}}CountryID").text = b_addr.get("country_code", "DE")
 
-    if b_contact_data.get("email"):
+    # BT-49 Buyer Electronic Address (Mandatory for Peppol / XRechnung)
+    if b_email:
         b_uri_comm = ET.SubElement(buyer_party, f"{{{RAM}}}URIUniversalCommunication")
         b_uri_id = ET.SubElement(b_uri_comm, f"{{{RAM}}}URIID")
         b_uri_id.set("schemeID", "EM")
-        b_uri_id.text = b_contact_data["email"]
+        b_uri_id.text = b_email
 
     b_tax = client.get("tax", {})
     if b_tax.get("vat_id"):
@@ -199,7 +207,7 @@ def build_en16931_xml(data: Dict[str, Any]) -> str:
         cred_inst = ET.SubElement(pay_means, f"{{{RAM}}}PayeeSpecifiedCreditorFinancialInstitution")
         ET.SubElement(cred_inst, f"{{{RAM}}}BICID").text = str(bank["bic"]).replace(" ", "")
 
-    # ApplicableTradeTax for each tax category
+    # ApplicableTradeTax for each tax category (BG-23)
     for tax in totals.get("tax_breakdown", []):
         trade_tax = ET.SubElement(settlement, f"{{{RAM}}}ApplicableTradeTax")
         ET.SubElement(trade_tax, f"{{{RAM}}}CalculatedAmount").text = fmt_2f(tax["amount"])
@@ -207,6 +215,20 @@ def build_en16931_xml(data: Dict[str, Any]) -> str:
         ET.SubElement(trade_tax, f"{{{RAM}}}BasisAmount").text = fmt_2f(tax["basis"])
         ET.SubElement(trade_tax, f"{{{RAM}}}CategoryCode").text = tax.get("category", "S")
         ET.SubElement(trade_tax, f"{{{RAM}}}RateApplicablePercent").text = fmt_2f(tax["rate"])
+
+    # BillingSpecifiedPeriod (BG-14: BT-73 Startdatum, BT-74 Enddatum)
+    deliv_period = inv.get("delivery_period", {})
+    if deliv_period.get("start") and deliv_period.get("end"):
+        bill_period = ET.SubElement(settlement, f"{{{RAM}}}BillingSpecifiedPeriod")
+        start_elem = ET.SubElement(bill_period, f"{{{RAM}}}StartDateTime")
+        start_str = ET.SubElement(start_elem, f"{{{UDT}}}DateTimeString")
+        start_str.set("format", "102")
+        start_str.text = fmt_date_102(deliv_period["start"])
+        
+        end_elem = ET.SubElement(bill_period, f"{{{RAM}}}EndDateTime")
+        end_str = ET.SubElement(end_elem, f"{{{UDT}}}DateTimeString")
+        end_str.set("format", "102")
+        end_str.text = fmt_date_102(deliv_period["end"])
 
     # Payment terms / due date
     if inv.get("due_date"):

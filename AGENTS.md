@@ -1,4 +1,4 @@
-﻿# AGENTS.md
+# AGENTS.md
 
 ## 1. Projektübersicht & Kontext
 
@@ -32,33 +32,42 @@ Halte dich stets an folgende Leitprinzipien:
 
 ## 3. Architektur & Verzeichnisstruktur
 
-Der Workspace wird wie folgt organisiert:
+Der Workspace ist wie folgt organisiert:
 
 ```plaintext
 invoice_sommler/
+├── .gitignore                 # Git-Ausschlussregeln für Caches, Temp-Dateien & IDEs
 ├── AGENTS.md                  # Projektkontext und KI-Richtlinien (dieses Dokument)
-├── plan.md                    # Detaillierter Implementierungsplan und Roadmap
+├── build.bat                  # Windows CMD Build-Skript
+├── build.ps1                  # PowerShell Build-Skript (Standard für Windows)
+├── build.sh                   # Linux/macOS Bash Build-Skript
 ├── assets/                    # Statische Assets (Logos, Schriftarten, Icons)
 │   └── logo.svg               # Logo für Briefkopf (oben rechts)
 ├── config/                    # Eigene Stammdaten & globale Einstellungen
 │   └── seller.yaml            # Kontaktdaten, Steuernummern, Bankverbindung (Kevin Sommler)
-├── data/                      # Datenbasis (SSOT)
-│   ├── clients/               # Kundenstammdaten (z.B. client_a.yaml, client_b.yaml)
-│   └── invoices/              # Rechnungsdefinitionen (z.B. 2026-001.yaml, 2026-002.yaml)
+├── data/                      # Datenbasis (Single Source of Truth)
+│   ├── clients/               # Kundenstammdaten (z.B. mybotshop.yaml)
+│   └── invoices/              # Rechnungsdefinitionen (z.B. 2026-MBS-001.yaml)
 ├── templates/                 # Vorlagen
-│   ├── typst/                 # Typst-Templates für PDF-Erstellung
-│   │   ├── invoice.typ        # Haupttemplate für Rechnungen
-│   │   └── components/        # Modulare Typst-Bausteine (Header, Table, Footer)
-│   └── xml/                   # Templates / Generatoren für EN16931 CII XML
+│   └── typst/                 # Typst-Templates für PDF-Erstellung
+│       ├── invoice.typ        # Haupttemplate für Rechnungen
+│       └── components/        # Modulare Typst-Bausteine (Header, Table, Payment, Footer)
 ├── src/                       # Python-basiertes CLI & Generator-Tooling
-│   ├── generator/             # Logik für Datenvalidierung, Summenberechnung, Typst- & XML-Rendering
-│   ├── validators/            # Validierung der Rechnungsdaten und XML gegen EN16931
-│   └── cli.py                 # Command-Line-Interface (z.B. 'py -m src.cli build 2026-001')
-├── output/                    # Generierte Artefakte (PDFs, XMLs, Kombinations-PDFs)
-│   └── 2026/
-└── examples/                  # Referenzbeispiele (Archivierte Originaldateien)
-    ├── example-invoice.pdf
-    └── example-e-invoice.xml
+│   ├── generator/             # Logik: Summenberechnung, GiroCode, XML-, PDF- & Factur-X-Builder
+│   │   ├── calculator.py
+│   │   ├── girocode.py
+│   │   ├── hybrid_builder.py
+│   │   ├── pdf_builder.py
+│   │   └── xml_builder.py
+│   ├── validators/            # Validierung der Rechnungsdaten und EN16931-Regeln
+│   │   └── validator.py
+│   └── cli.py                 # Command-Line-Interface (Build-, Test-, Watch-Commands)
+├── tests/                     # Testsuite für Berechnungen, GiroCode, XML & Hybrid-PDF
+└── output/                    # Generierte Artefakte (PDFs, XMLs, Factur-X PDFs)
+    └── 2026/
+        ├── RE-MBS-2026-001.pdf
+        ├── RE-MBS-2026-001.xml
+        └── RE-MBS-2026-001_factur-x.pdf
 ```
 
 ---
@@ -67,29 +76,39 @@ invoice_sommler/
 
 ### Gesetzliche & Fachliche Anforderungen (Deutschland / EU)
 - **Pflichtangaben nach § 14 UStG**:
-  - Vollständiger Name und Anschrift von Leistendem und Leistungsempfänger
+  - Vollständiger Name und Anschrift von Leistendem und Leistungsempfänger (inkl. Land)
   - Steuernummer und/oder USt-IdNr.
-  - Ausstellungsdatum, fortlaufende Rechnungsnummer
-  - Zeitpunkt / Zeitraum der Leistung
-  - Menge und Art der gelieferten Gegenstände bzw. Umfang und Art der sonstigen Leistung
-  - Nettoentgelt, Steuersatz (z.B. 19%), Steuerbetrag, Bruttobetrag
+  - Ausstellungsdatum, fortlaufende Rechnungsnummer (Kundenbezogener Nummernkreis: `RE-<KUNDE>-<JAHR>-<NUMMER>`)
+  - Leistungszeitraum / Lieferdatum (`BillingSpecifiedPeriod` BG-14)
+  - Menge, Einheit und Art der gelieferten Gegenstände bzw. Dienstleistungen
+  - Nettoentgelt, Steuersatz (19%), Steuerbetrag, Bruttobetrag
 - **EN16931 / XRechnung Spezifikation (CII - Cross Industry Invoice)**:
   - Syntax: `urn:un:unece:uncefact:data:standard:CrossIndustryInvoice:100`
   - Profil: `urn:cen.eu:en16931:2017#compliant#urn:xeinkauf.de:kosit:xrechnung_3.0`
-  - Maßeinheiten nach UN/ECE Rec 20: `HUR` (Stunden / Hours), `DAY` (Tage), `C62` (Stück / Pieces)
-  - Zahlungsziel und Zahlungsarten nach UNTDED 4461 (z.B. Code `58` SEPA Credit Transfer oder `97` Clearing)
+  - Maßeinheiten nach UN/ECE Rec 20: `HUR` (Stunden), `DAY` (Tage), `C62` (Stück / Pauschale)
+  - Zahlungsziel und Zahlungsarten nach UNTDED 4461 (Code `58` SEPA Credit Transfer)
+  - Elektronische Käuferadresse nach Peppol / BT-49: `URIUniversalCommunication` (Schema `EM` für E-Mail)
+  - Steueraufschlüsselung (BG-23): `ApplicableTradeTax` mit `CategoryCode` (`S`) und `RateApplicablePercent` (`19.00`)
 
 ---
 
 ## 5. Workflow für KI & Entwickler
 
-1. **Neue Rechnung anlegen**: Eine YAML-Datei unter `data/invoices/<JAHR>-<NUMMER>.yaml` anlegen.
-2. **Kunden referenzieren**: Entweder aus `data/clients/<KUNDE>.yaml` oder inline definieren.
+1. **Kunden anlegen / prüfen**: YAML unter `data/clients/<kunde>.yaml` (z.B. mit `client_code: MBS` und `contact.email`).
+2. **Rechnung anlegen**: YAML-Datei unter `data/invoices/<JAHR>-<KÜRZEL>-<NUMMER>.yaml` anlegen (z.B. `2026-MBS-001.yaml`).
 3. **Bauen & Validieren**:
    ```powershell
-   py -m src.cli build 2026-001
+   # Schneller Build mit Standard PowerShell-Skript:
+   .\build.ps1 2026-MBS-001
+
+   # Oder via Python CLI:
+   py -m src.cli build 2026-MBS-001
+   
+   # Tests ausführen:
+   py -m src.cli test
    ```
-4. **Ergebnis**:
-   - `output/<JAHR>/RE-<NUMMER>.pdf` (Typst gerendert mit Vektor-Logo)
-   - `output/<JAHR>/RE-<NUMMER>.xml` (Validierte EN16931 / XRechnung 3.0 Datei)
-   - Optional: `output/<JAHR>/RE-<NUMMER>_factur-x.pdf` (Hybrid-Rechnung ZUGFeRD / Factur-X)
+4. **Ergebnis in `output/<JAHR>/`**:
+   - `RE-<KÜRZEL>-<JAHR>-<NUMMER>.pdf` (Typst PDF mit Vektor-Logo & EPC-GiroCode QR)
+   - `RE-<KÜRZEL>-<JAHR>-<NUMMER>.xml` (100% KoSIT-validierte EN16931 / XRechnung 3.0 Datei)
+   - `RE-<KÜRZEL>-<JAHR>-<NUMMER>_factur-x.pdf` (Hybride PDF/A-3 Factur-X / ZUGFeRD E-Rechnung)
+

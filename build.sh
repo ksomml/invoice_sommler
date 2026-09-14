@@ -14,7 +14,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "${SCRIPT_DIR}"
 
-INVOICE_ID="${1:-2026-001}"
+INVOICE_ID="${1:-2026-MBS-001}"
 
 # Detect Python
 if command -v python3 &>/dev/null; then

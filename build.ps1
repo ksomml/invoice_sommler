@@ -7,7 +7,7 @@
     .\build.ps1 all
 #>
 param (
-    [string]$InvoiceId = "2026-001",
+    [string]$InvoiceId = "2026-MBS-001",
     [switch]$Force,
     [switch]$NoHybrid
 )

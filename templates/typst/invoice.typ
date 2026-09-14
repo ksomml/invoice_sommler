@@ -114,14 +114,12 @@
   #v(1.2mm)
 
   // 3. Subject / Heading
-  #text(size: 12.5pt, weight: "bold", fill: rgb("#0F172A"))[
-    #if "subject" in inv and inv.subject != "" [
-      #inv.subject
-    ] else [
-      RECHNUNG #inv.number
-    ]
+  #text(size: 13.5pt, weight: "bold", fill: rgb("#0F172A"))[Rechnung]
+  #if "subject" in inv and inv.subject != "" and inv.subject != none [
+    #v(0.4mm)
+    #text(size: 9.5pt, weight: "bold", fill: rgb("#334155"))[#inv.subject]
   ]
-  #v(0.3mm)
+  #v(0.8mm)
 
   // 4. Intro Text
   #if "intro_text" in inv and inv.intro_text != "" and inv.intro_text != none [
@@ -141,6 +139,14 @@
 
   // 7. Payment Terms & optional GiroCode
   #payment-block(inv, totals, girocode-path, format-euro, format-date, accent-color)
+
+  // 8. Optional Notes / Zusatzhinweise (z.B. Haftungsausschluss)
+  #if "notes" in inv and inv.notes != "" and inv.notes != none [
+    #v(2mm)
+    #text(size: 7.2pt, fill: rgb("#64748B"))[
+      #inv.notes
+    ]
+  ]
 ]
 
 // Dynamic data loader

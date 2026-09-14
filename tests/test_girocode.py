@@ -1,5 +1,6 @@
 import unittest
 from pathlib import Path
+
 from src.generator.girocode import build_epc_payload, generate_girocode_svg
 
 BASE_DIR = Path(__file__).resolve().parent.parent

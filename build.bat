@@ -2,7 +2,7 @@
 setlocal enabledelayedexpansion
 
 set INVOICE_ID=%~1
-if "%INVOICE_ID%"=="" set INVOICE_ID=2026-001
+if "%INVOICE_ID%"=="" set INVOICE_ID=2026-MBS-001
 
 echo ==================================================
 echo   Building Invoice: %INVOICE_ID%

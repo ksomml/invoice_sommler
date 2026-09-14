@@ -32,7 +32,7 @@
   }
 
   #table(
-    columns: (28pt, 1fr, 60pt, 68pt, 42pt, 72pt),
+    columns: (24pt, 1fr, 74pt, 66pt, 36pt, 68pt),
     stroke: (x, y) => if y == 0 { (bottom: 1.5pt + accent-color) } else { (bottom: 0.4pt + rgb("#E2E8F0")) },
     fill: (col, row) => if row == 0 { rgb("#FCFAF3") } else if calc.even(row) { rgb("#FDFBF7") } else { none },
     inset: (x: 6pt, y: 7pt),
@@ -50,30 +50,29 @@
 
 #let totals-block(totals, format-euro, accent-color) = [
   #align(right)[
-    #block(width: 95mm)[
+    #block(width: 85mm)[
       #set text(size: 9pt)
       #line(length: 100%, stroke: 1pt + accent-color)
-      #v(2pt)
+      #v(2.5pt)
       
       #grid(
-        columns: (auto, 1fr, auto),
+        columns: (1fr, auto),
         row-gutter: 5pt,
-        align: (left + horizon, left + horizon, right + horizon),
-        [Nettobetrag], [#h(2mm) #text(size: 6.5pt, fill: rgb("#64748B"))[Netto]], [#format-euro(totals.line_total_net)],
+        align: (left + horizon, right + horizon),
+        [Nettobetrag], [#format-euro(totals.line_total_net)],
         ..totals.tax_breakdown.map(tax => (
-          [zzgl. #str(tax.rate) % MwSt.], [#h(2mm)], [#format-euro(tax.amount)]
+          [zzgl. #str(tax.rate) % MwSt.], [#format-euro(tax.amount)]
         )).flatten()
       )
       
-      #v(2pt)
+      #v(2.5pt)
       #line(length: 100%, stroke: 1pt + accent-color)
-      #v(2pt)
+      #v(2.5pt)
       
       #grid(
-        columns: (auto, 1fr, auto),
-        align: (left + horizon, left + horizon, right + horizon),
+        columns: (1fr, auto),
+        align: (left + horizon, right + horizon),
         [*Gesamtbetrag*],
-        [#h(2mm) #text(size: 7pt, fill: rgb("#64748B"))[Brutto]],
         [*#text(size: 11pt, fill: rgb("#0F172A"))[#format-euro(totals.grand_total)]*]
       )
     ]

@@ -1,6 +1,20 @@
 // Typst Footer Component for Invoices
 // Inspired by examples/example-invoice.pdf with 3-column data, colored contact icons and sub-footer
 
+#let format-iban(iban) = {
+  if iban == none or iban == "" { return "" }
+  let clean = str(iban).replace(" ", "")
+  let formatted = ""
+  let i = 0
+  while i < clean.len() {
+    let chunk = clean.slice(i, calc.min(i + 4, clean.len()))
+    if formatted != "" { formatted = formatted + " " }
+    formatted = formatted + chunk
+    i = i + 4
+  }
+  formatted
+}
+
 #let footer-block(seller, inv, accent-color) = [
   #set text(size: 7pt, fill: rgb("#334155"))
 
@@ -8,7 +22,7 @@
   #line(length: 100%, stroke: 1pt + accent-color)
   #v(0.8mm)
 
-  // 3-Column Metadata
+  // 3-Column Metadata (exakt je 3 Zeilen pro Spalte für perfekte Symmetrie)
   #grid(
     columns: (1.1fr, 1fr, 1.2fr),
     gutter: 8pt,
@@ -24,7 +38,7 @@
     ],
     [
       #if "bank" in seller [
-        *IBAN:* #seller.bank.iban\
+        *IBAN:* #format-iban(seller.bank.iban)\
         *BIC / Swift:* #seller.bank.bic\
         *Bank:* #seller.bank.name
       ]
@@ -50,15 +64,17 @@
     ]
   ]
 
-  #v(1.4mm)
-  // Sub-footer: Rechnungsnummer & Seitenzahl
+  #v(0.8mm)
+  // Sub-footer: Seitenzahl (bei Mehrseitigkeit mit Rechnungsnummer)
   #align(center)[
-    #text(size: 6.2pt, fill: rgb("#94A3B8"))[
-      Rechnungs-Nr.: #inv.number
-      #if "order_reference" in inv and inv.order_reference != "" [
-        #h(3mm) | #h(3mm) Bestell-Nr.: #inv.order_reference
-      ]
-      #h(3mm) | #h(3mm) Seite #context { counter(page).display("1 von 1", both: true) }
+    #text(size: 6.5pt, fill: rgb("#94A3B8"))[
+      #context {
+        let total-pages = counter(page).final().at(0)
+        if total-pages > 1 {
+          [Rechnungs-Nr.: #inv.number #h(3mm) | #h(3mm) ]
+        }
+        [Seite #counter(page).display("1 von 1", both: true)]
+      }
     ]
   ]
 ]
