@@ -16,7 +16,7 @@ invoice:
   intro_text: "Vielen Dank für Ihren Auftrag. Für die erbrachten Leistungen erlaube ich mir, folgende Position in Rechnung zu stellen:"
   outro_text: ""
   
-  notes: "Hinweis zur Haftung: Die Haftung für Schäden an überlassener Hardware sowie für Sach- und Vermögensschäden im Rahmen der Leistungserbringung ist auf Vorsatz und grobe Fahrlässigkeit beschränkt. Eine Haftung für leichte Fahrlässigkeit wird vertraglich ausgeschlossen."
+  notes: ""
 
   items:
     - id: 1

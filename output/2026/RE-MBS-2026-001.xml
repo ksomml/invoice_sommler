@@ -18,9 +18,6 @@
       <ram:Content>Freiberuflicher Ingenieur (nicht im Handelsregister eingetragen)</ram:Content>
       <ram:SubjectCode>REG</ram:SubjectCode>
     </ram:IncludedNote>
-    <ram:IncludedNote>
-      <ram:Content>Hinweis zur Haftung: Die Haftung für Schäden an überlassener Hardware sowie für Sach- und Vermögensschäden im Rahmen der Leistungserbringung ist auf Vorsatz und grobe Fahrlässigkeit beschränkt. Eine Haftung für leichte Fahrlässigkeit wird vertraglich ausgeschlossen.</ram:Content>
-    </ram:IncludedNote>
   </rsm:ExchangedDocument>
   <rsm:SupplyChainTradeTransaction>
     <ram:IncludedSupplyChainTradeLineItem>
