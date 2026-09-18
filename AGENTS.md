@@ -38,6 +38,7 @@ Der Workspace ist wie folgt organisiert:
 invoice_sommler/
 ├── .gitignore                 # Git-Ausschlussregeln für Caches, Temp-Dateien & IDEs
 ├── AGENTS.md                  # Projektkontext und KI-Richtlinien (dieses Dokument)
+├── AUDITOR.md                 # Pre-Flight Quality Gate & Rechnungs-Prüfprotokoll für KI-Audits
 ├── build.bat                  # Windows CMD Build-Skript
 ├── build.ps1                  # PowerShell Build-Skript (Standard für Windows)
 ├── build.sh                   # Linux/macOS Bash Build-Skript
